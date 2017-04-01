@@ -1,17 +1,17 @@
-#Game Contest Server
+# Game Contest Server
 
 Interactive, web based manager for automated turn-based game contests.
 
-##Requirements
+## Requirements
 
 * Ruby on Rails
 * [RubyGems](https://rubygems.org)
 
-##User Documentation
+## User Documentation
 
 The user documentation can be found in [documentation](/documentation)
 
-##Setup
+## Setup
 
 Clone the repo: `git clone https://github.com/PastyPurpleTrolls/game-contest-server.git`
 
@@ -21,7 +21,7 @@ $ bundle install
 $ rake db:schema:load
 ```
 
-##Running (dev)
+## Running (dev)
 
 Start the server
 
@@ -47,7 +47,7 @@ View the logs from the daemon (from the root of the game server directory:
 tail -f tmp/clockworkd.clock.output
 ```
 
-###Manage Users
+### Manage Users
 
 Create user in web interface (host:port)
 
@@ -60,12 +60,12 @@ $ rails c
 > u.save
 ```
 
-###Tests
+### Tests
 
 Run tests: `rspec`
 
 
-###Migrations
+### Migrations
 
 See the folder db/migrate. If there are new migrations, then perform the following at the command line:
 ```bash
@@ -80,11 +80,11 @@ $ rake db:reset
 
 However, make sure that you understand the ramifications of this command- the database's existing data is deleted. See [seeds.rb](/db/seeds/development.rb) for what the default values of the db after the db is reset.
 
-##Development
+## Development
 
 Frontend user interface files are located in `app/assets`. Views are in `app/views`
 
-##Referees
+## Referees
 
 Referees are executable files that are uploaded by instructors to enforce the rules in a competition match. The Game Contest Server does not have any concept of what a "game" is, rather the referee is in charge of defining what that means (chess, checkers, risk, etc...) 
 
@@ -92,17 +92,17 @@ For security and practical purposes, players and referees are started as seperat
 
 Example referees are located in [examples](examples). Python referees should take advantage of [ref_helper.py](examples/ref_helper.py) which implements several useful classes and methods for managing communication with the game manager.
 
-###Replay Plugin
+### Replay Plugin
 
 Every referee should be uploaded with a replay plugin. This piece of code handles calculating and rendering replays of games in the web browser. The Game Contest Server automatically creates log files from data sent via the protocol during each round. These log files are parsed and made available to replay plugins. 
 
 Please refer to the [replay plugin documentation](documentation/creator/referee.md#replay-plugin) for more information.
 
-##Design
+## Design
 
 The Game Contest Server employs two different services: a web server and a background daemon that runs tournaments and matches. The web server allows users to upload players and referees, manage tournaments, and view replays of rounds that have been played on the system. The background daemon continuously checks for new tournaments and matches, runs matches, and adds the results to the database.
 
-###Executable Environment
+### Executable Environment
 
 User players and referees inherently need to be executed. To faciliate this, several helper files are located in `exec_environment/`.
 
@@ -116,7 +116,7 @@ Matches are executed and saved by `match_runner.rb`. This executable is in charg
 
 Each round is executed by `round_wrapper.rb`. The referee is started and told to listen on a specific port for a set number of players. Then the players are started and told the port where they can find the referee. Referees are in charge of handling communication with the players, but they must check in with `round_wrapper.rb` or the match runner will assume the game has failed and will stop the match. 
 
-###ERD
+### ERD
 ![Image of ERD document](/documentation/GameContestServerERD.png)
 
 Many to many relationships are represented with a colored connection. This represents an additional associative entity (such as player_rounds) that connects the two entities. 
